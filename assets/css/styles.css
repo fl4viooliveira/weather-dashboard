@@ -1,60 +1,36 @@
-aside{
+/*
+* SIDE BAR
+*/
+aside {
   height: 100%;
 }
-ul{
-  list-style: none;
-}
-.input-group {
-  width: 100%;
-}
 .input-group{
-  width: 100%;
-  border: 1px solid gray;
-  margin: 0 auto;
-}
-button{
+  flex-direction: column;
   width: 100%;
 }
-input{
-  width: 100%;
-}
-.input-group-append{
-  width: 100%
-}
-#search-button{
-  max-width: 400px;
-}
-.form-group{
-  width: 100%;
-}
-.input-group{
-  width: 100%;
-}
-.input-group-append{
-  margin: 10px 0;
-  width: 100%;
-}
-.list-group{
+
+.list-group {
   height: 100%;
   display: flex;
-
 }
-.list-group ul{
+.list-group ul {
+  list-style: none;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.list-group li{
+.list-group li {
   margin: 10px auto;
   width: 100%;
 }
-#today{
+
+#today {
   height: calc(100% / 2);
   border: 1px solid gray;
 }
-#forecast{
+#forecast {
   height: calc(100% / 2);
   border: 1px solid gray;
 }

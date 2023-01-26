@@ -1,5 +1,6 @@
 var historyList = $('#history');
 var list = $('<ul>')
+list.attr('class', 'list-group')
 
 var historyItem1 = $('<li>')
 var historyItem2 = $('<li>')
@@ -8,7 +9,7 @@ var historyItem4 = $('<li>')
 var historyItem5 = $('<li>')
 var historyItem6 = $('<li>')
 
-historyItem1.addClass('btn btn-secondary')
+historyItem1.addClass('btn btn-secondary btn-block')
 historyItem2.addClass('btn btn-secondary')
 historyItem3.addClass('btn btn-secondary')
 historyItem4.addClass('btn btn-secondary')
