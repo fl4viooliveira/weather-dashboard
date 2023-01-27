@@ -1,0 +1,28 @@
+/*
+* SIDE BAR
+*/
+aside {
+  height: 100%;
+}
+.input-group{
+  flex-direction: column;
+  width: 100%;
+}
+
+.list-group {
+  height: 100%;
+  display: flex;
+}
+.list-group ul {
+  list-style: none;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-group li {
+  margin: 10px auto;
+  width: 100%;
+}
+
