@@ -77,4 +77,74 @@ cardBody.append(humidityText);
 
 // 5 DAY FORECAST
 var forecastBox = $("#forecast");
+
+var cardDeck = $('<div>')
+cardDeck.attr('class', 'card-deck px-3' )
+forecastBox.append(cardDeck)
+
+var foreCard = $('<div class="card">')
+cardDeck.append(foreCard)
+
+var dateCardBody = $('<div class="card-body">')
+foreCard.append(dateCardBody)
+
+var foreCardTitle = $('<h5 class="card-title">');
+dateCardBody.append(foreCardTitle)
+
+foreCardTitle.text(`${city} (${date})`);
+
 console.log(forecastBox);
+
+var foreCard = $('<div class="card">')
+cardDeck.append(foreCard)
+
+var dateCardBody = $('<div class="card-body">')
+foreCard.append(dateCardBody)
+
+var foreCardTitle = $('<h5 class="card-title">');
+dateCardBody.append(foreCardTitle)
+
+foreCardTitle.text(`${city} (${date})`);
+
+
+
+var foreCard = $('<div class="card">')
+cardDeck.append(foreCard)
+
+var dateCardBody = $('<div class="card-body">')
+foreCard.append(dateCardBody)
+
+var foreCardTitle = $('<h5 class="card-title">');
+dateCardBody.append(foreCardTitle)
+
+foreCardTitle.text(`${city} (${date})`);
+
+
+
+var foreCard = $('<div class="card">')
+cardDeck.append(foreCard)
+
+var dateCardBody = $('<div class="card-body">')
+foreCard.append(dateCardBody)
+
+var foreCardTitle = $('<h5 class="card-title">');
+dateCardBody.append(foreCardTitle)
+
+foreCardTitle.text(`${city} (${date})`);
+
+
+var foreCard = $('<div class="card">')
+cardDeck.append(foreCard)
+
+var dateCardBody = $('<div class="card-body">')
+foreCard.append(dateCardBody)
+
+var foreCardTitle = $('<h5 class="card-title">');
+dateCardBody.append(foreCardTitle)
+
+foreCardTitle.text(`${city} (${date})`);
+
+
+
+
+
