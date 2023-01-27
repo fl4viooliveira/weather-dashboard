@@ -78,73 +78,101 @@ cardBody.append(humidityText);
 // 5 DAY FORECAST
 var forecastBox = $("#forecast");
 
-var cardDeck = $('<div>')
-cardDeck.attr('class', 'card-deck px-3' )
-forecastBox.append(cardDeck)
+var cardDeck = $("<div>");
+cardDeck.attr("class", "card-deck px-3");
+forecastBox.append(cardDeck);
 
-var foreCard = $('<div class="card">')
-cardDeck.append(foreCard)
+var foreCard = $('<div class="card">');
+cardDeck.append(foreCard);
 
-var dateCardBody = $('<div class="card-body">')
-foreCard.append(dateCardBody)
+var dateCardBody = $('<div class="card-body">');
+foreCard.append(dateCardBody);
 
 var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle)
+dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
 console.log(forecastBox);
 
-var foreCard = $('<div class="card">')
-cardDeck.append(foreCard)
+var foreCard = $('<div class="card">');
+cardDeck.append(foreCard);
 
-var dateCardBody = $('<div class="card-body">')
-foreCard.append(dateCardBody)
+var dateCardBody = $('<div class="card-body">');
+foreCard.append(dateCardBody);
 
 var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle)
+dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
+var foreCard = $('<div class="card">');
+cardDeck.append(foreCard);
 
-
-var foreCard = $('<div class="card">')
-cardDeck.append(foreCard)
-
-var dateCardBody = $('<div class="card-body">')
-foreCard.append(dateCardBody)
+var dateCardBody = $('<div class="card-body">');
+foreCard.append(dateCardBody);
 
 var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle)
+dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
+var foreCard = $('<div class="card">');
+cardDeck.append(foreCard);
 
-
-var foreCard = $('<div class="card">')
-cardDeck.append(foreCard)
-
-var dateCardBody = $('<div class="card-body">')
-foreCard.append(dateCardBody)
+var dateCardBody = $('<div class="card-body">');
+foreCard.append(dateCardBody);
 
 var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle)
+dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
+var foreCard = $('<div class="card">');
+cardDeck.append(foreCard);
 
-var foreCard = $('<div class="card">')
-cardDeck.append(foreCard)
-
-var dateCardBody = $('<div class="card-body">')
-foreCard.append(dateCardBody)
+var dateCardBody = $('<div class="card-body">');
+foreCard.append(dateCardBody);
 
 var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle)
+dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
+// Api test
+// var city = "Sao Paulo";
+// var city = "London";
+// var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=london&appid=a1668648ccfd8acfcd0c4f5c7ac64f5f"
+// var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=london&appid=a1668648ccfd8acfcd0c4f5c7ac64f5f"
+
+var test;
+
+function getData(city) {
+  var key = "a1668648ccfd8acfcd0c4f5c7ac64f5f";
+  var queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`;
+
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (resp) {
 
 
+    console.log(resp);
+    var data = {
+      city: resp.city.name,
+      today: {
+        date: resp.list[0].dt_txt, // TODO: Convert date
+        temp: resp.list[0].main.temp,
+        wind: resp.list[0].wind.speed,
+        humidity: resp.list[0].main.humidity,
+        icon: `https://openweathermap.org/img/wn/${resp.list[0].weather[0].icon}.png`,
+      },
+      forecast:{}
+    };
+    // console.log(resp);
+    // var cityName = resp.city.name;
+    console.log(data);
+  });
+}
 
-
+getData("London");
