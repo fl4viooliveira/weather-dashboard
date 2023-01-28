@@ -139,13 +139,6 @@ dateCardBody.append(foreCardTitle);
 
 foreCardTitle.text(`${city} (${date})`);
 
-// Api test
-// var city = "Sao Paulo";
-// var city = "London";
-// var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=london&appid=a1668648ccfd8acfcd0c4f5c7ac64f5f"
-// var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=london&appid=a1668648ccfd8acfcd0c4f5c7ac64f5f"
-
-var test;
 
 function getData(city) {
   var key = "a1668648ccfd8acfcd0c4f5c7ac64f5f";
@@ -155,7 +148,49 @@ function getData(city) {
     url: queryURL,
     method: "GET",
   }).then(function (resp) {
+    var list = resp.list;
 
+    // Get first element of the string before space
+    function getDate(str) {
+      var dateStr = str.substring(0, str.indexOf(" "));
+      return dateStr;
+    }
+
+    // Average function
+    function average(arr) {
+      var result =
+        arr.reduce(function (a, b) {
+          return a + b;
+        }) / arr.length;
+      return result;
+    }
+    const arrTemp = [];
+    const arrWind = [];
+    const arrHumidity = [];
+
+    var dataArray = [];
+
+    var index = 0;
+
+    function five(array) {
+      var date = getDate(array[index].dt_txt);
+
+      for (var i = 0; i < array.length; i++) {
+        if (getDate(array[i].dt_txt) !== date) {
+          dataArray.push({
+            date: array[i].dt_txt, // TODO: Convert date
+            temp: array[i].main.temp,
+            wind: array[i].wind.speed,
+            humidity: array[i].main.humidity,
+            icon: `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`,
+          });
+        }
+        date = getDate(array[i].dt_txt);
+      }
+    }
+
+    five(list);
+    console.log(dataArray);
 
     console.log(resp);
     var data = {
@@ -167,12 +202,11 @@ function getData(city) {
         humidity: resp.list[0].main.humidity,
         icon: `https://openweathermap.org/img/wn/${resp.list[0].weather[0].icon}.png`,
       },
-      forecast:{}
+      forecast: dataArray,
     };
-    // console.log(resp);
-    // var cityName = resp.city.name;
     console.log(data);
   });
 }
 
 getData("London");
+
