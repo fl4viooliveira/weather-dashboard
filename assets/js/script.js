@@ -148,6 +148,8 @@ function getData(city) {
     url: queryURL,
     method: "GET",
   }).then(function (resp) {
+
+
     var list = resp.list;
 
     // Get first element of the string before space
@@ -208,5 +210,15 @@ function getData(city) {
   });
 }
 
-getData("London");
+var srcBtn = $('#search-button')
+var srcInp = $('#search-input')
+
+srcBtn.on('click', function(e){
+  e.preventDefault()
+  console.log(srcInp.val())
+
+getData(srcInp.val());
+  
+})
+
 
