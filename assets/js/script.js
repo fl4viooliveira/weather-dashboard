@@ -1,4 +1,4 @@
-// TODAY WEATHER
+// Function to create today card getting data from on object.
 function today(obj) {
   // Clean the section before add new elements to avoid add more then 1 card
   $("#today").empty();
@@ -48,10 +48,12 @@ function storage() {
   }
 }
 
+// Function to send to localStorage the array with cities called
 function storeCities(arr) {
   localStorage.setItem("listOfCities", JSON.stringify(arr));
 }
 
+// Function that use city name as argument to call all data from API
 function getData(city) {
   var key = "a1668648ccfd8acfcd0c4f5c7ac64f5f";
   var queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`;
@@ -71,6 +73,7 @@ function getData(city) {
 
     var index = 0;
 
+    // Function that loop thought the five days forecast array to get data an build page elements
     function five(array) {
       // Clean the section before add new elements to avoid add more then 1 card
       $("#forecast").empty();
@@ -117,7 +120,7 @@ function getData(city) {
 
     five(list);
 
-    console.log(resp);
+    // This object is to be used by the today function 
     var data = {
       city: resp.city.name,
       today: {
@@ -129,12 +132,10 @@ function getData(city) {
         icon: `https://openweathermap.org/img/wn/${resp.list[0].weather[0].icon}.png`,
       },
     };
-    console.log(`Get DATA TYPE: ${data.today.date}`);
+
     today(data);
 
     cityList.push(data.city);
-
-    console.log(cityList, list);
 
     storage();
     /*
@@ -149,6 +150,7 @@ function getData(city) {
 var srcBtn = $("#search-button");
 var srcInp = $("#search-input");
 
+// Search Button event - get the input and apply to the main function;
 srcBtn.on("click", function (e) {
   e.preventDefault();
 
@@ -171,6 +173,7 @@ function reload() {
   }
 }
 
+// function to create the history buttons
 function createHistory(arr) {
   $("#history").empty();
   arr = [];
@@ -183,6 +186,7 @@ function createHistory(arr) {
 
   if (localStorage.listOfCities) {
     var stor = JSON.parse(localStorage.getItem("listOfCities"));
+    stor.reverse();
 
     for (var i = 0; i < stor.length; i++) {
       arr.push(stor[i]);
@@ -191,6 +195,8 @@ function createHistory(arr) {
       );
     }
   }
+
+  // history button click function 
   $(".hist").on("click", function () {
     var btnCity = $(this).text();
     getData(btnCity);
