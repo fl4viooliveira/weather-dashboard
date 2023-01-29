@@ -1,38 +1,32 @@
 // TODAY WEATHER
 function today(obj) {
-
+  // Clean the section before add new elements to avoid add more then 1 card
   $('#today').empty()
-
   var todayBox = $("#today");
-
   var todayCard = $("<div>");
   todayCard.attr("class", "card");
-
   todayBox.append(todayCard);
 
   var cardBody = $('<div class="card-body">');
   todayCard.append(cardBody);
 
   var cardTitle = $('<h5 class="card-title">');
-
   cardTitle.text(`${obj.city} (${obj.today.date})`);
-
   cardTitle.append(`<img src=${obj.today.icon} alt="${obj.today.desc}">`);
   cardBody.append(cardTitle);
 
   var tempText = $('<p class="card-text">');
   tempText.text(`Temp: ${obj.today.temp}ºC`);
+  cardBody.append(tempText);
 
   var windText = $('<p class="card-text">');
   windText.text(`Wind: ${obj.today.wind}KPH`);
+  cardBody.append(windText);
 
   var humidityText = $('<p class="card-text">');
-  var humidity = "1.7";
   humidityText.text(`Humidity: ${obj.today.humidity}%`);
-
-  cardBody.append(tempText);
-  cardBody.append(windText);
   cardBody.append(humidityText);
+
 }
 
 var city = "London";
