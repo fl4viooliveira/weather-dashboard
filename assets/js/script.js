@@ -1,8 +1,9 @@
 // TODAY WEATHER
 function today(obj) {
-  var todayBox = "";
 
-  todayBox = $("#today");
+  $('#today').empty()
+
+  var todayBox = $("#today");
 
   var todayCard = $("<div>");
   todayCard.attr("class", "card");
@@ -185,9 +186,8 @@ function getData(city) {
     var data = {
       city: resp.city.name,
       today: {
-        // date: resp.list[0].dt_txt, // TODO: Convert date
-        date: getDate(resp.list[0].dt_txt), // TODO: Convert date
-        temp: resp.list[0].main.temp,
+        date: getDate(resp.list[0].dt_txt), 
+        temp: ((resp.list[0].main.temp) - 273.15).toFixed(2),
         wind: resp.list[0].wind.speed,
         humidity: resp.list[0].main.humidity,
         desc: resp.list[0].weather[0].description,
