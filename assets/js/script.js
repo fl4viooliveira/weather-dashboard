@@ -1,42 +1,39 @@
 // TODAY WEATHER
-var todayBox = $("#today");
-console.log(todayBox);
+function today(obj) {
+  // Clean the section before add new elements to avoid add more then 1 card
+  $('#today').empty()
+  var todayBox = $("#today");
+  var todayCard = $("<div>");
+  todayCard.attr("class", "card");
+  todayBox.append(todayCard);
 
-var todayCard = $("<div>");
-todayCard.attr("class", "card");
+  var cardBody = $('<div class="card-body">');
+  todayCard.append(cardBody);
 
-todayBox.append(todayCard);
+  var cardTitle = $('<h5 class="card-title">');
+  cardTitle.text(`${obj.city} (${obj.today.date})`);
+  cardTitle.append(`<img src=${obj.today.icon} alt="${obj.today.desc}">`);
+  cardBody.append(cardTitle);
 
-var cardBody = $('<div class="card-body">');
-todayCard.append(cardBody);
+  var tempText = $('<p class="card-text">');
+  tempText.text(`Temp: ${obj.today.temp}ºC`);
+  cardBody.append(tempText);
 
-var cardTitle = $('<h5 class="card-title">');
+  var windText = $('<p class="card-text">');
+  windText.text(`Wind: ${obj.today.wind}KPH`);
+  cardBody.append(windText);
+
+  var humidityText = $('<p class="card-text">');
+  humidityText.text(`Humidity: ${obj.today.humidity}%`);
+  cardBody.append(humidityText);
+
+}
+
 var city = "London";
 var date = "27/01/2023";
 var icon = "ml-3 fa-regular fa-sun";
-
-cardTitle.text(`${city} (${date})`);
-
-cardTitle.append(`<i class="${icon}">`);
-cardBody.append(cardTitle);
-
-var tempText = $('<p class="card-text">');
-var temp = "13.63";
-tempText.text(`Temp: ${temp}ºC`);
-
-var windText = $('<p class="card-text">');
-var wind = "1.7";
-windText.text(`Wind: ${wind}KPH`);
-
-var humidityText = $('<p class="card-text">');
-var humidity = "1.7";
-humidityText.text(`Humidity: ${humidity}%`);
-
-cardBody.append(tempText);
-cardBody.append(windText);
-cardBody.append(humidityText);
-
-// 5 DAY FORECAST
+var alt = "";
+// 5 DAYS FORECAST
 var forecastBox = $("#forecast");
 
 var cardDeck = $("<div>");
@@ -101,7 +98,7 @@ dateCardBody.append(foreCardTitle);
 foreCardTitle.text(`${city} (${date})`);
 
 var cityList = [];
-var history = []
+var history = [];
 
 /*
  *The storage function, pull the localStorage,
@@ -131,19 +128,19 @@ function getData(city) {
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function(resp) {
+  }).then(function (resp) {
     var list = resp.list;
 
     // Get first element of the string before space
     function getDate(str) {
       var dateStr = str.substring(0, str.indexOf(" "));
-      return dateStr;
+      return dateStr.split("-").reverse().join("-")
     }
 
     // Average function
     function average(arr) {
       var result =
-        arr.reduce(function(a, b) {
+        arr.reduce(function (a, b) {
           return a + b;
         }) / arr.length;
       return result;
@@ -153,11 +150,11 @@ function getData(city) {
     const arrHumidity = [];
 
     var dataArray = [];
-    console.log(cityList);
 
     var index = 0;
 
     function five(array) {
+      console.log(array);
       var date = getDate(array[index].dt_txt);
 
       for (var i = 0; i < array.length; i++) {
@@ -167,6 +164,7 @@ function getData(city) {
             temp: array[i].main.temp,
             wind: array[i].wind.speed,
             humidity: array[i].main.humidity,
+            desc: array[i].weather[0].descriptions,
             icon: `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`,
           });
         }
@@ -175,23 +173,28 @@ function getData(city) {
     }
 
     five(list);
+
     console.log(dataArray);
 
     console.log(resp);
     var data = {
       city: resp.city.name,
       today: {
-        date: resp.list[0].dt_txt, // TODO: Convert date
-        temp: resp.list[0].main.temp,
+        date: getDate(resp.list[0].dt_txt), 
+        temp: ((resp.list[0].main.temp) - 273.15).toFixed(2),
         wind: resp.list[0].wind.speed,
         humidity: resp.list[0].main.humidity,
+        desc: resp.list[0].weather[0].description,
         icon: `https://openweathermap.org/img/wn/${resp.list[0].weather[0].icon}.png`,
       },
       forecast: dataArray,
     };
-    console.log(data);
+    console.log(`Get DATA TYPE: ${data.today.date}`);
+    today(data);
 
     cityList.push(data.city);
+
+    console.log(cityList, list);
 
     storage();
     /*
@@ -206,8 +209,7 @@ function getData(city) {
 var srcBtn = $("#search-button");
 var srcInp = $("#search-input");
 
-
-srcBtn.on("click", function(e) {
+srcBtn.on("click", function (e) {
   e.preventDefault();
 
   console.log(srcInp.val());
@@ -216,22 +218,20 @@ srcBtn.on("click", function(e) {
 
   getData(cityBySearch);
 
-  reload()
-
-
+  reload();
 });
 
 function reload() {
-  var store = JSON.parse(localStorage.getItem("listOfCities"))
-  var list = $('li')
-  console.log(store)
+  var store = JSON.parse(localStorage.getItem("listOfCities"));
+  var list = $("li");
+  console.log(store);
   if (list.length !== store.length) {
     location.reload();
   }
 }
 
 function createHistory(arr) {
-  arr = []
+  arr = [];
   var historyItem = $("<li>");
   historyItem.addClass("btn btn-secondary");
   var historyList = $("#history");
@@ -240,16 +240,13 @@ function createHistory(arr) {
   historyList.append(cityList);
 
   if (localStorage.listOfCities) {
-    var stor = JSON.parse(localStorage.getItem("listOfCities"))
+    var stor = JSON.parse(localStorage.getItem("listOfCities"));
 
     for (var i = 0; i < stor.length; i++) {
       arr.push(stor[i]);
       cityList.append(`<li id=${i} class="btn btn-secondary">${stor[i]}</li>`);
     }
-
   }
 }
 
-createHistory(history)
-
-
+createHistory(history);
