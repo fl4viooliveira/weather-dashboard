@@ -29,74 +29,6 @@ function today(obj) {
 
 }
 
-var city = "London";
-var date = "27/01/2023";
-var icon = "ml-3 fa-regular fa-sun";
-var alt = "";
-// 5 DAYS FORECAST
-var forecastBox = $("#forecast");
-
-var cardDeck = $("<div>");
-cardDeck.attr("class", "card-deck px-3");
-forecastBox.append(cardDeck);
-
-var foreCard = $('<div class="card">');
-cardDeck.append(foreCard);
-
-var dateCardBody = $('<div class="card-body">');
-foreCard.append(dateCardBody);
-
-var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle);
-
-foreCardTitle.text(`${city} (${date})`);
-
-console.log(forecastBox);
-
-var foreCard = $('<div class="card">');
-cardDeck.append(foreCard);
-
-var dateCardBody = $('<div class="card-body">');
-foreCard.append(dateCardBody);
-
-var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle);
-
-foreCardTitle.text(`${city} (${date})`);
-
-var foreCard = $('<div class="card">');
-cardDeck.append(foreCard);
-
-var dateCardBody = $('<div class="card-body">');
-foreCard.append(dateCardBody);
-
-var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle);
-
-foreCardTitle.text(`${city} (${date})`);
-
-var foreCard = $('<div class="card">');
-cardDeck.append(foreCard);
-
-var dateCardBody = $('<div class="card-body">');
-foreCard.append(dateCardBody);
-
-var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle);
-
-foreCardTitle.text(`${city} (${date})`);
-
-var foreCard = $('<div class="card">');
-cardDeck.append(foreCard);
-
-var dateCardBody = $('<div class="card-body">');
-foreCard.append(dateCardBody);
-
-var foreCardTitle = $('<h5 class="card-title">');
-dateCardBody.append(foreCardTitle);
-
-foreCardTitle.text(`${city} (${date})`);
-
 var cityList = [];
 var history = [];
 
@@ -128,19 +60,20 @@ function getData(city) {
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function (resp) {
+  }).then(function(resp) {
     var list = resp.list;
+    console.log(list)
 
     // Get first element of the string before space
     function getDate(str) {
       var dateStr = str.substring(0, str.indexOf(" "));
-      return dateStr.split("-").reverse().join("-")
+      return dateStr.split("-").reverse().join("/")
     }
 
     // Average function
     function average(arr) {
       var result =
-        arr.reduce(function (a, b) {
+        arr.reduce(function(a, b) {
           return a + b;
         }) / arr.length;
       return result;
@@ -154,19 +87,45 @@ function getData(city) {
     var index = 0;
 
     function five(array) {
-      console.log(array);
-      var date = getDate(array[index].dt_txt);
+      // Clean the section before add new elements to avoid add more then 1 card
+      $('#forecast').empty()
 
+      var forecastBox = $('#forecast')
+      forecastBox.append($('<h4 class="px-3 w-100">5-Days Forecast: </h4>'))
+      var cardDeck = $("<div>");
+      cardDeck.attr("class", "card-deck px-3 w-100");
+      forecastBox.append(cardDeck);
+
+      var date = getDate(array[index].dt_txt);
       for (var i = 0; i < array.length; i++) {
+        // Condition to get only one element per day
         if (getDate(array[i].dt_txt) !== date) {
-          dataArray.push({
-            date: array[i].dt_txt, // TODO: Convert date
-            temp: array[i].main.temp,
-            wind: array[i].wind.speed,
-            humidity: array[i].main.humidity,
-            desc: array[i].weather[0].descriptions,
-            icon: `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`,
-          });
+
+          var foreCard = $('<div class="card mb-3 bg-dark text-white">');
+          cardDeck.append(foreCard);
+
+          var dateCardBody = $('<div class="card-body">');
+          foreCard.append(dateCardBody);
+
+          var foreCardTitle = $('<h6 class="card-title p-1">');
+          dateCardBody.append(foreCardTitle);
+          foreCardTitle.text(`${getDate(array[i].dt_txt)}`);
+          var icon = `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`
+
+          var image = $(`<img src=${icon}>`);
+          dateCardBody.append(image)
+
+          var tempText = $('<p class="card-text">');
+          tempText.text(`Temp: ${((array[i].main.temp) - 273.15).toFixed(2)}ºC`);
+          dateCardBody.append(tempText);
+
+          var windText = $('<p class="card-text">');
+          windText.text(`Wind: ${array[i].wind.speed}KPH`);
+          dateCardBody.append(windText);
+
+          var humidityText = $('<p class="card-text">');
+          humidityText.text(`Humidity: ${array[i].main.humidity}%`);
+          dateCardBody.append(humidityText);
         }
         date = getDate(array[i].dt_txt);
       }
@@ -174,20 +133,17 @@ function getData(city) {
 
     five(list);
 
-    console.log(dataArray);
-
     console.log(resp);
     var data = {
       city: resp.city.name,
       today: {
-        date: getDate(resp.list[0].dt_txt), 
+        date: getDate(resp.list[0].dt_txt),
         temp: ((resp.list[0].main.temp) - 273.15).toFixed(2),
         wind: resp.list[0].wind.speed,
         humidity: resp.list[0].main.humidity,
         desc: resp.list[0].weather[0].description,
         icon: `https://openweathermap.org/img/wn/${resp.list[0].weather[0].icon}.png`,
       },
-      forecast: dataArray,
     };
     console.log(`Get DATA TYPE: ${data.today.date}`);
     today(data);
@@ -209,7 +165,7 @@ function getData(city) {
 var srcBtn = $("#search-button");
 var srcInp = $("#search-input");
 
-srcBtn.on("click", function (e) {
+srcBtn.on("click", function(e) {
   e.preventDefault();
 
   console.log(srcInp.val());
@@ -244,9 +200,15 @@ function createHistory(arr) {
 
     for (var i = 0; i < stor.length; i++) {
       arr.push(stor[i]);
-      cityList.append(`<li id=${i} class="btn btn-secondary">${stor[i]}</li>`);
+      cityList.append(`<li id=${i} class="hist btn btn-secondary">${stor[i]}</li>`);
     }
   }
 }
 
 createHistory(history);
+
+$('.hist').on('click', function(){
+  var btnCity = $(this).text()
+  getData(btnCity)
+  console.log($(this).text())
+})
