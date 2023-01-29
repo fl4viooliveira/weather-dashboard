@@ -1,7 +1,7 @@
 // TODAY WEATHER
 function today(obj) {
   // Clean the section before add new elements to avoid add more then 1 card
-  $('#today').empty()
+  $("#today").empty();
   var todayBox = $("#today");
   var todayCard = $("<div>");
   todayCard.attr("class", "card");
@@ -26,7 +26,6 @@ function today(obj) {
   var humidityText = $('<p class="card-text">');
   humidityText.text(`Humidity: ${obj.today.humidity}%`);
   cardBody.append(humidityText);
-
 }
 
 var cityList = [];
@@ -60,38 +59,24 @@ function getData(city) {
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function(resp) {
+  }).then(function (resp) {
     var list = resp.list;
-    console.log(list)
+    console.log(list);
 
     // Get first element of the string before space
     function getDate(str) {
       var dateStr = str.substring(0, str.indexOf(" "));
-      return dateStr.split("-").reverse().join("/")
+      return dateStr.split("-").reverse().join("/");
     }
-
-    // Average function
-    function average(arr) {
-      var result =
-        arr.reduce(function(a, b) {
-          return a + b;
-        }) / arr.length;
-      return result;
-    }
-    const arrTemp = [];
-    const arrWind = [];
-    const arrHumidity = [];
-
-    var dataArray = [];
 
     var index = 0;
 
     function five(array) {
       // Clean the section before add new elements to avoid add more then 1 card
-      $('#forecast').empty()
+      $("#forecast").empty();
 
-      var forecastBox = $('#forecast')
-      forecastBox.append($('<h4 class="px-3 w-100">5-Days Forecast: </h4>'))
+      var forecastBox = $("#forecast");
+      forecastBox.append($('<h4 class="px-3 w-100">5-Days Forecast: </h4>'));
       var cardDeck = $("<div>");
       cardDeck.attr("class", "card-deck px-3 w-100");
       forecastBox.append(cardDeck);
@@ -100,7 +85,6 @@ function getData(city) {
       for (var i = 0; i < array.length; i++) {
         // Condition to get only one element per day
         if (getDate(array[i].dt_txt) !== date) {
-
           var foreCard = $('<div class="card mb-3 bg-dark text-white">');
           cardDeck.append(foreCard);
 
@@ -110,13 +94,13 @@ function getData(city) {
           var foreCardTitle = $('<h6 class="card-title p-1">');
           dateCardBody.append(foreCardTitle);
           foreCardTitle.text(`${getDate(array[i].dt_txt)}`);
-          var icon = `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`
+          var icon = `https://openweathermap.org/img/wn/${array[i].weather[0].icon}.png`;
 
           var image = $(`<img src=${icon}>`);
-          dateCardBody.append(image)
+          dateCardBody.append(image);
 
           var tempText = $('<p class="card-text">');
-          tempText.text(`Temp: ${((array[i].main.temp) - 273.15).toFixed(2)}ºC`);
+          tempText.text(`Temp: ${(array[i].main.temp - 273.15).toFixed(2)}ºC`);
           dateCardBody.append(tempText);
 
           var windText = $('<p class="card-text">');
@@ -138,7 +122,7 @@ function getData(city) {
       city: resp.city.name,
       today: {
         date: getDate(resp.list[0].dt_txt),
-        temp: ((resp.list[0].main.temp) - 273.15).toFixed(2),
+        temp: (resp.list[0].main.temp - 273.15).toFixed(2),
         wind: resp.list[0].wind.speed,
         humidity: resp.list[0].main.humidity,
         desc: resp.list[0].weather[0].description,
@@ -165,7 +149,7 @@ function getData(city) {
 var srcBtn = $("#search-button");
 var srcInp = $("#search-input");
 
-srcBtn.on("click", function(e) {
+srcBtn.on("click", function (e) {
   e.preventDefault();
 
   console.log(srcInp.val());
@@ -174,6 +158,7 @@ srcBtn.on("click", function(e) {
 
   getData(cityBySearch);
 
+  createHistory(history);
   reload();
 });
 
@@ -187,6 +172,7 @@ function reload() {
 }
 
 function createHistory(arr) {
+  $("#history").empty();
   arr = [];
   var historyItem = $("<li>");
   historyItem.addClass("btn btn-secondary");
@@ -200,15 +186,17 @@ function createHistory(arr) {
 
     for (var i = 0; i < stor.length; i++) {
       arr.push(stor[i]);
-      cityList.append(`<li id=${i} class="hist btn btn-secondary">${stor[i]}</li>`);
+      cityList.append(
+        `<li id=${i} class="hist btn btn-secondary">${stor[i]}</li>`
+      );
     }
   }
+  $(".hist").on("click", function () {
+    var btnCity = $(this).text();
+    getData(btnCity);
+    console.log($(this).text());
+    reload();
+  });
 }
 
 createHistory(history);
-
-$('.hist').on('click', function(){
-  var btnCity = $(this).text()
-  getData(btnCity)
-  console.log($(this).text())
-})
