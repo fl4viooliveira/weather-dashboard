@@ -63,7 +63,6 @@ function getData(city) {
     method: "GET",
   }).then(function (resp) {
     var list = resp.list;
-    console.log(list);
 
     // Get first element of the string before space
     function getDate(str) {
@@ -154,8 +153,6 @@ var srcInp = $("#search-input");
 srcBtn.on("click", function (e) {
   e.preventDefault();
 
-  console.log(srcInp.val());
-
   var cityBySearch = srcInp.val();
 
   getData(cityBySearch);
@@ -167,7 +164,6 @@ srcBtn.on("click", function (e) {
 function reload() {
   var store = JSON.parse(localStorage.getItem("listOfCities"));
   var list = $("li");
-  console.log(store);
   if (list.length !== store.length) {
     location.reload();
   }
@@ -200,7 +196,6 @@ function createHistory(arr) {
   $(".hist").on("click", function () {
     var btnCity = $(this).text();
     getData(btnCity);
-    console.log($(this).text());
     reload();
   });
 }
