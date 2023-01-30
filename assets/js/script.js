@@ -4,7 +4,7 @@ function today(obj) {
   $("#today").empty();
   var todayBox = $("#today");
   var todayCard = $("<div>");
-  todayCard.attr("class", "card");
+  todayCard.attr("class", "card border-primary bg-light");
   todayBox.append(todayCard);
 
   var cardBody = $('<div class="card-body">');
@@ -12,7 +12,7 @@ function today(obj) {
 
   var cardTitle = $('<h5 class="card-title">');
   cardTitle.text(`${obj.city} (${obj.today.date})`);
-  cardTitle.append(`<img src=${obj.today.icon} alt="${obj.today.desc}">`);
+  cardTitle.append(`<img class="ml-3 bg-info rounded-circle " src=${obj.today.icon} alt="${obj.today.desc}">`);
   cardBody.append(cardTitle);
 
   var tempText = $('<p class="card-text">');
@@ -87,7 +87,7 @@ function getData(city) {
       for (var i = 0; i < array.length; i++) {
         // Condition to get only one element per day
         if (getDate(array[i].dt_txt) !== date) {
-          var foreCard = $('<div class="card mb-3 bg-dark text-white">');
+          var foreCard = $('<div class="card mb-3 bg-info text-white">');
           cardDeck.append(foreCard);
 
           var dateCardBody = $('<div class="card-body">');
